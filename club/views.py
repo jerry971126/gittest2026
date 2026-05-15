@@ -5,17 +5,23 @@ from django.urls import reverse_lazy
 # Create your views here.
 
 def club_list(req):
-    clubs = Log.objects.select_related('club__club_name').all() #?不知是否可行
+    clubs = Club.objects
     return render(req, "club/log_list.html",{'club_list':clubs})
 
 class Loglist(ListView):
     model = Log
 
+    def get_queryset(self):
+        return Log.objects.filter(result=False)
+
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['club_list'] = Club.objects.all()
+        return ctx
+
 class Clubcreate(CreateView):
     model = Club
-    fields = ['club_name' , 'max_people_num' , 'noe_people_num']
-    def form_valid(self, form):
-        form.instance.club_id = self.kwargs['cid']
-        return super().form_valid(form)
+    fields = '__all__'
     def get_success_url(self):
         return reverse_lazy('log_list')

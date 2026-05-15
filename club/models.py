@@ -8,7 +8,7 @@ class Club(models.Model):
     now_people_num = models.IntegerField('社團現有人數' , default=0)
 
     def __str__(self):
-        return f"{self.club_id}-{self.club_name}"
+        return f"{self.club_name}"
 
 
 class User(models.Model):
@@ -19,7 +19,7 @@ class User(models.Model):
     club = models.ForeignKey(Club , models.CASCADE)
 
     def __str__(self):
-        return f"{self.us_id}-{self.us_name}-{self.us_email}"
+        return f"{self.us_name}-{self.us_email}"
 
 class Apply(models.Model):
     #ap_id = models.IntegerField('申請單id' , default=0)
@@ -28,8 +28,7 @@ class Apply(models.Model):
     club = models.ForeignKey(Club , models.CASCADE)
 
     def __str__(self):
-        return self.ap_id
-
+        return "表單"
 class Log(models.Model): #包含記錄追尋
     #path_id = models.IntegerField('歷史路徑id' , default=0)
     result = models.BooleanField('審查結果' , default=False)
@@ -40,4 +39,4 @@ class Log(models.Model): #包含記錄追尋
     club = models.ForeignKey(Club , models.CASCADE)
 
     def __str__(self):
-        return f"{self.user.us_name}-{self.apply.ap_id}-{self.date}"
+        return f"{self.user.us_name}-{self.date}"
