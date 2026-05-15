@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}轉社單_首頁{% endblock %}
+
+{% block main %}
+<h1>轉社服務</h1>
+<h2><a href="{ url 'club_create' club.id }">社團註冊</a></h2>
+<h2><a href="">使用者註冊</a></h2>
+<br />
+<h3>社團名單</h3>
+<ul>
+    {% for cl in club_list  %}
+        <ul>
+            <li><b>{{ cl.club_name }}</b> 人數上限:{{ cl.max_people_num }} 現有人數:{{ cl.now_people_num }}</li>
+        </ul>
+    {% endfor %}
+</ul>
+{% endblock %}
