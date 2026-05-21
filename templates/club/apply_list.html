@@ -29,17 +29,27 @@
         <table>
             <thead>
                 <tr>
-                    <th>申請日期</th>
-                    <th>申請者</th>
-                    <th>目標社團</th>
+                    {% for apply in apply_list %}
+                    <th>
+                        <a href="{% url 'apply_detail' apply.id %}">
+                        {{ apply.created|date:"Y-m-d" }} {{ apply.user.us_name }} : 
+                        由⌈{{ apply.user.club }}⌋ 轉道 ⌈{{ apply.club }}⌋
+                        </a>
+                    </th>
+                    {% endfor %}    
+                    {% comment %} <th>申請日期</th> {% endcomment %}
+                    {% comment %} <th>申請者</th> {% endcomment %}
+                    {% comment %} <th>目標社團</th> {% endcomment %}
                 </tr>
             </thead>
             <tbody>
-                {% for apply in object_list %}
+                {% comment %} {% for apply in object_list %} {% endcomment %}
+                {% for apply in apply_list %}
                 <tr>
-                    <td>{{ apply.created }}</td>
+                    <td>{{ apply.created|date:"Y-m-d" }}</td>
                     <td>{{ apply.user.us_name }}</td>
-                    <td>{{ apply.club.club_name }}</td>
+                    <td>由⌈{{ apply.user.club }}⌋ 轉道 ⌈{{ apply.club }}⌋</td>
+                    <td><a href='{% url 'apply_detail' apply.id %}'>詳細內容</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

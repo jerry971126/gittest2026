@@ -21,6 +21,23 @@
             <p class="club-status">{{ cl.now_people_num|default:0 }} / {{ cl.max_people_num|default:0 }}</p>
         </article>
         {% empty %}
+        
+        <!-- 這段是用來顯示社團成員的(不需要可刪除) -->
+       <ul>
+        {% for cl in club_list %}
+        <li>
+            <h3>{{ cl.club_name }}</h3>
+            <div class="club_members">
+                {% for us in cl.user_set.all %}
+                <div>{{ us }}</div>
+                {% endfor %}
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
+
+        </div>
+        {% comment %} {% endfor %} {% endcomment %}
         <div class="empty-state">
             <p>目前沒有社團資料。</p>
         </div>

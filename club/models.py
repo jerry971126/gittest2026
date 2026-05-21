@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 # Create your models here.
 
@@ -6,8 +8,7 @@ class Club(models.Model):
     #club_id = models.IntegerField('社團id' , default=0)
     club_name = models.CharField('社團名稱' , max_length=64)
     max_people_num = models.IntegerField('社團人數上限' , default=0)
-    now_people_num = models.IntegerField('社團現有人數' , default=0)
-
+    now_people_num = models.IntegerField('社團現有人數' , default=0, validators=[MinValueValidator(0),MinValueValidator(512)])
 
     def __str__(self):
         return f"{self.club_name}"
@@ -30,10 +31,16 @@ class Apply(models.Model):
     sstu_pass = models.BooleanField('社長同意' ,default=False)
     sch_pass = models.BooleanField('學校同意', default=False)
     user = models.ForeignKey(User , models.CASCADE)
-    club = models.ForeignKey(Club , models.CASCADE)
-
-    # def __str__(self):
-    #     return self.created
+    club = models.ForeignKey(Club ,models.CASCADE)
+    club_after = models.ForeignKey(Club ,
+                                # models.CASCADE
+                                on_delete=models.CASCADE,
+                                related_name='after_apply',
+                                null=True,
+                                blank=True
+                                )
+#    def __str__(self):
+#       return self.
 
 class Log(models.Model): #包含記錄追尋
     #path_id = models.IntegerField('歷史路徑id' , default=0)

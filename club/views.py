@@ -4,9 +4,9 @@ from django.views.generic import ListView, RedirectView, CreateView, DetailView,
 from django.urls import reverse_lazy
 # Create your views here.
 
-def club_list(req):
-    clubs = Log.objects.select_related('club__club_name').all() #?不知是否可行
-    return render(req, "club/log_list.html",{'club_list':clubs})
+# def club_list(req):
+#     clubs = Log.objects.select_related('club__club_name').all() #?不知是否可行
+#     return render(req, "club/log_list.html",{'club_list':clubs})
 
 class Loglist(ListView):
     model = Log
@@ -44,11 +44,12 @@ class Usercreate(CreateView):
 
 class Applycreate(CreateView):
     model = Apply
+    # fields = ['sstu_pass','sch_pass','user','club_after']
     fields = '__all__'
 
-    def form_valid(self, form):
-        # form.instance.orig_club = 
-        return form
+    # def form_valid(self, form):
+    #     form.instance.club = self.object.user.club 要在連結個人帳號後才能聯動
+    #     return form
 
     def get_success_url(self):
         return reverse_lazy('log_list')
@@ -74,6 +75,5 @@ class ApplyUpdate(UpdateView):
     def form_valid(self, form):
         if self.object.sstu_pass and self.object.sch_pass:
             self.object.user.club = self.object.new_club
-            self.object.user.save()
-            
+            self.object.user.save()            
         return form
