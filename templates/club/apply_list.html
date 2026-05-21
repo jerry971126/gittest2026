@@ -3,5 +3,29 @@
 {% block title %}申請單列表{% endblock %}
 
 {% block main %}
-
+    <h2>Club List</h2>
+    <ul>
+        {% for cl in club_list %}
+        <li>
+            <h3>{{ cl.club_name }}</h3>
+            <div class="club_members">
+                {% for us in cl.user_set.all %}
+                <div>{{ us }}</div>
+                {% endfor %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Apply List</h2>
+    {{ apply_list }}
+    <ul>
+        {% for apply in apply_list %}
+        <li>
+            <a href="{% url 'apply_detail' apply.id %}">
+                {{ apply.created|date:"Y-m-d" }} {{ apply.user.us_name }} : 
+                {{ apply.user.club }} -> {{ apply.club }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

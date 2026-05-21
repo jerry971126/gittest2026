@@ -19,6 +19,7 @@ class User(models.Model):
     us_email = models.CharField('使用者信箱', max_length=128)
     us_rank = models.IntegerField('使用者身分' , default=0) #0=轉社學生 ; 社長=1 ; 2=教師 ; 3=行政 (問題:如果是社長要轉社)
     club = models.ForeignKey(Club , models.CASCADE)
+    #one to one
 
     def __str__(self):
         return f"{self.us_name}-{self.us_email}"
@@ -26,11 +27,13 @@ class User(models.Model):
 class Apply(models.Model):
     #ap_id = models.IntegerField('申請單id' , default=0)
     created = models.DateField('表單建立時間' , auto_now_add=True)
+    sstu_pass = models.BooleanField('社長同意' ,default=False)
+    sch_pass = models.BooleanField('學校同意', default=False)
     user = models.ForeignKey(User , models.CASCADE)
     club = models.ForeignKey(Club , models.CASCADE)
 
-    def __str__(self):
-        return self.created
+    # def __str__(self):
+    #     return self.created
 
 class Log(models.Model): #包含記錄追尋
     #path_id = models.IntegerField('歷史路徑id' , default=0)
