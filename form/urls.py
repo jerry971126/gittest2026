@@ -22,5 +22,5 @@ from django.urls import reverse_lazy
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('form/', include("club.urls")),
-    #path('', RedirectView.as_view(url=reverse_lazy('poll_list'))), 
+    path('', RedirectView.as_view(url=reverse_lazy('log_list'))), 
 ]

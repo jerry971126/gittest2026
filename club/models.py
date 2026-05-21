@@ -1,11 +1,13 @@
 from django.db import models
 
 # Create your models here.
+
 class Club(models.Model):
     #club_id = models.IntegerField('社團id' , default=0)
     club_name = models.CharField('社團名稱' , max_length=64)
     max_people_num = models.IntegerField('社團人數上限' , default=0)
     now_people_num = models.IntegerField('社團現有人數' , default=0)
+
 
     def __str__(self):
         return f"{self.club_name}"
@@ -28,7 +30,8 @@ class Apply(models.Model):
     club = models.ForeignKey(Club , models.CASCADE)
 
     def __str__(self):
-        return "表單"
+        return self.created
+
 class Log(models.Model): #包含記錄追尋
     #path_id = models.IntegerField('歷史路徑id' , default=0)
     result = models.BooleanField('審查結果' , default=False)
