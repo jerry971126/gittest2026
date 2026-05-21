@@ -3,10 +3,16 @@
 {% block title %}申請表建立{% endblock %}
 
 {% block main %}
-<h1>申請表單建立</h1>
-    <form action="" method="post">
+<section class="panel form-panel">
+    <div class="panel-header">
+        <h1>申請表單建立</h1>
+        <p>建立新的轉社申請，選擇使用者與目標社團。</p>
+    </div>
+
+    <form action="" method="post" class="form-card">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="新增">
+        <button type="submit" class="button button-primary">新增</button>
     </form>
+</section>
 {% endblock %}

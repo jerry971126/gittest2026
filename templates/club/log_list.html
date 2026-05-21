@@ -3,12 +3,18 @@
 {% block title %}轉社單_首頁{% endblock %}
 
 {% block main %}
-<h1>轉社服務</h1>
-<h2><a href="{% url 'club_create' %}">社團註冊</a></h2>
-<h2><a href="{% url 'user_create' %}">使用者註冊</a></h2>
-<h2><a href="{% url 'apply_create' %}">申請表建立 </a></h2>
-<br />
-<br />
-<h2><a href="{% url 'club_list' %}">社團名單</a></h2>
-<h2><a href="{% url 'apply_list' %}">現有申請表列表</a></h2>
+<section class="hero-panel panel">
+    <div>
+        <p class="eyebrow">社團轉社管理</p>
+        <h1>歡迎使用轉社服務</h1>
+        <p>依序註冊社團、使用者，建立申請表並查看社團名單。</p>
+    </div>
+    <div class="action-grid">
+        <a class="card-link" href="{% url 'club_create' %}">社團註冊</a>
+        <a class="card-link" href="{% url 'user_create' %}">使用者註冊</a>
+        <a class="card-link" href="{% url 'apply_create' %}">申請表建立</a>
+        <a class="card-link" href="{% url 'club_list' %}">社團名單</a>
+        <a class="card-link" href="{% url 'apply_list' %}">申請列表</a>
+    </div>
+</section>
 {% endblock %}

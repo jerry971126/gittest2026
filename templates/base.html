@@ -1,11 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Document{% endblock %}</title>
+    <title>{% block title %}轉社管理系統{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css.css' %}">
 </head>
 <body>
-    {% block main %}{% endblock %}
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="brand">
+                <a href="{% url 'log_list' %}">轉社管理系統</a>
+            </div>
+            <nav class="site-nav">
+                <a href="{% url 'log_list' %}">🏠 首頁</a>
+                <a href="{% url 'club_create' %}">📘 社團註冊</a>
+                <a href="{% url 'user_create' %}">👤 使用者註冊</a>
+                <a href="{% url 'apply_create' %}">📝 申請表單</a>
+                <a href="{% url 'club_list' %}">🏫 社團名單</a>
+                <a href="{% url 'apply_list' %}">📄 申請列表</a>
+            </nav>
+        </header>
+
+        <main class="page-content">
+            {% block main %}{% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="maker-list">
+                <strong>製作組：</strong>
+                {% include 'partials/makers.html' %}
+            </div>
+            <p class="copyright">© 2026 轉社管理系統 · 製作者：Jerry</p>
+        </footer>
+    </div>
+    <script src="{% static 'javascripts.js' %}"></script>
 </body>
 </html>
