@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}社團名單{% endblock %}
+
+{% block main %}
+    <h1>社團名單和現況</h1>
+    {% for cl in club_list %}
+        <ul>
+            <li>{{ cl.club_name }}-最多可收人數:{{ cl.max_people_num }}-現有人數:{{ cl.now_people_num }}<!-- 審核中人數 --></li>
+        </ul>
+    {% endfor %}
+{% endblock %}

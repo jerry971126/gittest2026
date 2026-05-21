@@ -47,3 +47,12 @@ class Applycreate(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('log_list')
+    
+class Clublist(ListView):
+    model = Club
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['club_list'] = Club.objects.all()
+        #社長姓名
+        #申請轉設中的人數        
+        return ctx
