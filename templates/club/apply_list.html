@@ -3,5 +3,52 @@
 {% block title %}申請單列表{% endblock %}
 
 {% block main %}
+<section class="panel">
+    <div class="panel-header">
+        <h1>申請單列表</h1>
+        <p>查看目前申請記錄與審核狀態。</p>
+    </div>
 
+    <div class="summary-grid">
+        <article class="summary-card">
+            <span class="summary-label">🔄 審核中</span>
+            <strong>{{ log_list_check|length }}</strong>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">✅ 已通過</span>
+            <strong>{{ log_list_pass|length }}</strong>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">❌ 不通過</span>
+            <strong>{{ log_list_fail|length }}</strong>
+        </article>
+    </div>
+
+    {% if object_list %}
+    <div class="table-panel">
+        <table>
+            <thead>
+                <tr>
+                    <th>申請日期</th>
+                    <th>申請者</th>
+                    <th>目標社團</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for apply in object_list %}
+                <tr>
+                    <td>{{ apply.created }}</td>
+                    <td>{{ apply.user.us_name }}</td>
+                    <td>{{ apply.club.club_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>目前沒有申請表資料。</p>
+    </div>
+    {% endif %}
+</section>
 {% endblock %}

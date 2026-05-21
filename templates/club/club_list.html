@@ -3,10 +3,27 @@
 {% block title %}社團名單{% endblock %}
 
 {% block main %}
-    <h1>社團名單和現況</h1>
-    {% for cl in club_list %}
-        <ul>
-            <li>{{ cl.club_name }}-最多可收人數:{{ cl.max_people_num }}-現有人數:{{ cl.now_people_num }}<!-- 審核中人數 --></li>
-        </ul>
-    {% endfor %}
+<section class="panel">
+    <div class="panel-header">
+        <h1>社團名單和現況</h1>
+        <p>查看目前註冊社團的成員上限與現有人數。</p>
+    </div>
+
+    <div class="card-grid">
+        {% for cl in club_list %}
+        <article class="club-card">
+            <h2>{{ cl.club_name }}</h2>
+            <div class="club-meta">
+                <span>最多可招收：{{ cl.max_people_num }}</span>
+                <span>現有人數：{{ cl.now_people_num }}</span>
+            </div>
+            <p class="club-status">{{ cl.now_people_num|default:0 }} / {{ cl.max_people_num|default:0 }}</p>
+        </article>
+        {% empty %}
+        <div class="empty-state">
+            <p>目前沒有社團資料。</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
