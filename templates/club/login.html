@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}會員登入{% endblock %}
+
+{% block main %}
+<section class="panel">
+    <div class="panel-header">
+        <h1>會員登入</h1>
+        <p>請選擇使用者身份登入系統。</p>
+    </div>
+
+    <form method="post" class="form-card">
+        {% csrf_token %}
+        <div>
+            {{ form.user.label_tag }}
+            {{ form.user }}
+            {% if form.user.errors %}
+                <p class="field-error">{{ form.user.errors }}</p>
+            {% endif %}
+        </div>
+        <button type="submit" class="button button-primary">登入</button>
+    </form>
+</section>
+{% endblock %}

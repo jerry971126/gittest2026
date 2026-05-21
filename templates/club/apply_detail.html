@@ -1,7 +1,114 @@
 {% extends 'base.html' %}
 
-{% block title %}申請表內容{% endblock %}
+{% block title %}申請表內容 · {{ object.user.us_name }}{% endblock %}
 
 {% block main %}
+<section class="panel hero-panel">
+    <span class="eyebrow">申請詳情</span>
+    <div>
+        <h1>{{ object.user.us_name }} 的轉社申請</h1>
+        <p>提交於 {{ object.created|date:"Y年m月d日" }}，由 <strong>{{ object.user.club }}</strong> 申請轉入 <strong>{{ object.club }}</strong>。</p>
+    </div>
+    <div class="action-grid">
+        <a class="card-link" href="{% url 'apply_list' %}">← 返回申請列表</a>
+        <a class="card-link" href="{% url 'apply_create' %}">📝 新增申請</a>
+    </div>
+</section>
 
+<section class="panel">
+    <div class="panel-header">
+        <h2>申請摘要</h2>
+        <p>一覽申請者資料、審核狀態與轉社走向。</p>
+    </div>
+
+    <div class="summary-grid">
+        <article class="summary-card">
+            <span class="summary-label">申請者</span>
+            <strong>{{ object.user.us_name }}</strong>
+            <p>{{ object.user.us_email }}</p>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">目前社團</span>
+            <strong>{{ object.user.club }}</strong>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">申請目標社團</span>
+            <strong>{{ object.club }}</strong>
+        </article>
+        <article class="summary-card">
+            <span class="summary-label">最終轉入</span>
+            <strong>{% if object.club_after %}{{ object.club_after }}{% else %}尚未指定{% endif %}</strong>
+        </article>
+    </div>
+
+    <div class="detail-grid">
+        <article class="detail-card">
+            <h3>審核進度</h3>
+            <div class="detail-row">
+                <span class="detail-label">社長同意</span>
+                <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <span class="status-pill {% if object.sstu_pass %}approved{% else %}pending{% endif %}">{% if object.sstu_pass %}✅ 已同意{% else %}⏳ 等待中{% endif %}</span>
+                    {% if current_user and current_user.us_rank == 1 and current_user.club == object.user.club and not object.sstu_pass %}
+                        <form method="post" action="{% url 'approve_sstu' object.pk %}">{% csrf_token %}<button class="button" type="submit">社長同意</button></form>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">學校同意</span>
+                <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <span class="status-pill {% if object.sch_pass %}approved{% else %}pending{% endif %}">{% if object.sch_pass %}✅ 已同意{% else %}⏳ 等待中{% endif %}</span>
+                    {% if current_user and current_user.us_rank == 2 and current_user.club == object.club and not object.sch_pass %}
+                        <form method="post" action="{% url 'approve_sch' object.pk %}">{% csrf_token %}<button class="button" type="submit">指導老師同意</button></form>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+
+        <article class="detail-card">
+            <h3>申請資訊</h3>
+            <div class="detail-row">
+                <span class="detail-label">申請日期</span>
+                <span class="detail-value">{{ object.created|date:"Y年m月d日" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">申請者身分</span>
+                <span class="detail-value">{{ object.user.us_rank }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">目標社團名稱</span>
+                <span class="detail-value">{{ object.club }}</span>
+            </div>
+        </article>
+    </div>
+</section>
+<section class="panel">
+    <div class="panel-header">
+        <h2>審核紀錄</h2>
+        <p>顯示該申請在系統中的歷史審核事件。</p>
+    </div>
+
+    {% if logs %}
+    <div class="table-panel">
+        <table>
+            <thead>
+                <tr><th>時間</th><th>審核者</th><th>社團</th><th>結果</th></tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.date|date:"Y-m-d" }}</td>
+                    <td>{{ log.user.us_name }}</td>
+                    <td>{{ log.club }}</td>
+                    <td>{% if log.result %}✅ 通過{% else %}❌ 不通過{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>尚無審核紀錄。</p>
+    </div>
+    {% endif %}
+</section>
 {% endblock %}
