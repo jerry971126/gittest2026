@@ -17,6 +17,10 @@
 
         <!-- 預計額外做成另一個頁面  -->
     <h3>🛠️ 表單操作</h3>
+
+    {% if request.user.us_rank == 1 %}
+    <a href="{% url "apply_delete" apply.id %}">刪除此表單</a>
+    {% endif %}
     
     {% if apply.sstu1_pass is None and request.user.is_authenticated %}
         {% if request.user.us_rank == 1 or request.user.us_rank == 3 and request.user.club == apply.club %}

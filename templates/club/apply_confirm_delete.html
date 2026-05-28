@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}刪除申請表{% endblock %}
+
+{% block main %}
+<h1>刪除申請表</h1>
+<p>
+    確定要刪除申請表{{apply.subject}}嗎?
+</p>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="確定刪除">
+</form>
+{% endblock %}

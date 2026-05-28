@@ -98,20 +98,24 @@ class ApplyUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #用來
                 return True
         return False
 
-    # 🌟 核心修正：覆寫 get_form，這才是真正動態控制網頁表單欄位的「萬靈丹」
+    #   核心修正：覆寫 get_form，這才是真正動態控制網頁表單欄位的「萬靈丹」
     def get_form(self, form_class=None):
         # 先拿到預設包含 3 個欄位的原始表單
         form = super().get_form(form_class)
         user = self.request.user
         apply_obj = self.get_object()
 
-        # 情況 A：如果是 1 級管理員或 2 級校方人員 -> 他們只能改學校同意
-        if user.us_rank in [User.Rank.lv1, User.Rank.lv2]:
+        # 🌟 情況 A1：1級管理員 -> 擁有最高權限，3種check都可以調整，所以不拔除任何欄位
+        if user.us_rank == User.Rank.lv1:
+            pass  # 什麼都不做，保留原本 fields 宣告的 3 個欄位
+
+        # 🌟 情況 A2：如果是 2 級校方人員 -> 他們只能改學校同意
+        elif user.us_rank == User.Rank.lv2:
             # 把不屬於他們的欄位從表單中完全拔除
             form.fields.pop('sstu1_pass', None)
             form.fields.pop('sstu2_pass', None)
 
-        # 情況 B：如果是 3 級社長
+        # 情況 B：如果是 3 級社長（維持原來的嚴格分權邏輯）
         elif user.us_rank == User.Rank.lv3:
             # 檢查 1：如果他同時是原社長也是新社長（特殊極端狀況），或者只是原社長
             if user.club == apply_obj.club and user.club != apply_obj.club_after:
@@ -121,7 +125,7 @@ class ApplyUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  #用來
             elif user.club == apply_obj.club_after and user.club != apply_obj.club:
                 form.fields.pop('sstu1_pass', None)
                 form.fields.pop('sch_pass', None)
-            # 檢查 3：如果他是原社長，同時也是新社長（比如學生申請轉入同一個社團被防呆擋下前的極端狀況）
+            # 檢查 3：如果他是原社長，同時也是新社長
             elif user.club == apply_obj.club and user.club == apply_obj.club_after:
                 form.fields.pop('sch_pass', None)
             else:
