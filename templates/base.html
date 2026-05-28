@@ -15,8 +15,16 @@
             </div>
             <nav class="site-nav">
                 <a href="{% url 'log_list' %}">🏠 首頁</a>
-                <a href="{% url 'club_create' %}">📘 社團註冊</a>
+                {% if not user.is_authenticated %}
                 <a href="{% url 'register' %}">👤 使用者註冊</a>
+                <a href="{% url 'login' %}">登入</a>
+                {% else %}
+                <form action="{% url 'logout' %}" method="post"> <!--action="把資料送到哪"-->
+                {% csrf_token %}
+                <input type="submit" value="登出">
+                    </form>
+                {% endif %}
+                <a href="{% url 'club_create' %}">📘 社團註冊</a>      
                 <a href="{% url 'apply_create' %}">📝 申請表單</a>
                 <a href="{% url 'club_list' %}">🏫 社團名單</a>
                 <a href="{% url 'apply_list' %}">📄 申請列表</a>

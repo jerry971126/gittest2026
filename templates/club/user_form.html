@@ -9,10 +9,17 @@
         <p>建立新使用者資料，包含姓名、信箱與所屬社團。</p>
     </div>
 
-    <form action="" method="post" class="form-card">
+    {% comment %} <form action="" method="post" class="form-card">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="button button-primary">新增</button>
+    </form> {% endcomment %}
+    <form method="post">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        
+        <button type="submit">確認註冊</button>
     </form>
 </section>
 {% endblock %}

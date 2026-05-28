@@ -10,7 +10,18 @@
         <p>依序註冊社團、使用者，建立申請表並查看社團名單。</p>
     </div>
     <div class="action-grid">
-        <a class="card-link" href="{% url 'club_create' %}">社團註冊</a>
+        {% if not user.is_authenticated %}
+        <a class="card-link" href="{% url 'register' %}"> 使用者註冊</a>
+        <a class="card-link" href="{% url 'login' %}">登入</a>
+        {% else %}
+        <form action="{% url 'logout' %}" method="post"> <!--action="把資料送到哪"-->
+            {% csrf_token %}
+            Hi! {{ user }}
+            目前所屬社團:{{user_li.club}}
+            <br />
+            <input type="submit" value="登出">
+        </form>
+        {% endif %}
         <a class="card-link" href="{% url 'register' %}">使用者註冊</a>
         <a class="card-link" href="{% url 'apply_create' %}">申請表建立</a>
         <a class="card-link" href="{% url 'club_list' %}">社團名單</a>
