@@ -3,5 +3,84 @@
 {% block title %}申請表內容{% endblock %}
 
 {% block main %}
+    <h2>轉社申請單 #{{ apply.id }} 詳情</h2>
+    <hr>
 
+    <h3>📌 基本資訊</h3>
+    <p><strong>申請時間：</strong> {{ apply.created }}</p>
+    <p><strong>申請學生：</strong> {{ apply.user.username }} (學號/帳號)</p>
+    <p><strong>電子信箱：</strong> {{ apply.user.email }}</p>
+    <p><strong>目前所在社團（原社團）：</strong> {{ apply.club.club_name }}</p>
+    <p><strong>申請轉入社團（新社團）：</strong> {{ apply.club_after.club_name }}</p>
+
+    <hr>
+
+        <!-- 預計額外做成另一個頁面  -->
+    <h3>🛠️ 表單操作</h3>
+    
+    {% if apply.sstu1_pass is None and request.user.is_authenticated %}
+        {% if request.user.us_rank == 1 or request.user.us_rank == 3 and request.user.club == apply.club %}
+        
+            <p style="background-color: #f0f8ff; padding: 10px;">
+                👋 您好 {{ request.user.username }}，您擁有此單的「原社長審核權限」：
+                <br><br>
+                <a href="{% url 'apply_update' apply.id %}" style="background-color: green; color: white; padding: 5px 10px; text-decoration: none;">點我進行審核</a>
+            </p>
+        {% endif %}
+    {% endif %}
+
+    <hr>
+
+    <h3>⏳ 目前審核進度狀態</h3>
+    <ul>
+        <li>
+            <strong>第一關：原社長審核：</strong> 
+            {% if apply.sstu1_pass == True %}
+                <span style="color: green;">✅ 已同意</span>
+            {% elif apply.sstu1_pass == False %}
+                <span style="color: red;">❌ 已拒絕</span>
+            {% else %}
+                <span style="color: orange;">⏳ 等待審核中</span>
+            {% endif %}
+        </li>
+        <li>
+            <strong>第二關：新社長審核：</strong> 
+            {% if apply.sstu2_pass == True %}
+                <span style="color: green;">✅ 已同意</span>
+            {% elif apply.sstu2_pass == False %}
+                <span style="color: red;">❌ 已拒絕</span>
+            {% else %}
+                <span style="color: orange;">⏳ 等待審核中</span>
+            {% endif %}
+        </li>
+        <li>
+            <strong>第三關：學校行政核定：</strong> 
+            {% if apply.sch_pass == True %}
+                <span style="color: green;">🎉 轉社成功</span>
+            {% elif apply.sch_pass == False %}
+                <span style="color: red;">❌ 學校駁回</span>
+            {% else %}
+                <span style="color: orange;">⏳ 學校審核中</span>
+            {% endif %}
+        </li>
+    </ul>
+
+    {% comment %} <hr>
+
+
+    <!-- 預計額外做成另一個頁面  -->
+    <h3>🛠️ 表單操作</h3>
+    
+    {% if apply.sstu1_pass is None and request.user.is_authenticated %}
+        {% if request.user.us_rank == 1 or request.user.us_rank == 3 and request.user.club == apply.club %}
+        
+            <p style="background-color: #f0f8ff; padding: 10px;">
+                👋 您好 {{ request.user.username }}，您擁有此單的「原社長審核權限」：
+                <br><br>
+                <a href="#" style="background-color: green; color: white; padding: 5px 10px; text-decoration: none;">點我進行審核</a>
+            </p>
+        {% endif %}
+    {% endif %} {% endcomment %}
+
+    <p><a href="{% url 'apply_list' %}">🔙 返回申請單列表</a></p>
 {% endblock %}

@@ -23,7 +23,11 @@
         </form>
         {% endif %}
         <a class="card-link" href="{% url 'register' %}">使用者註冊</a>
+        {% if user.is_authenticated %} 
         <a class="card-link" href="{% url 'apply_create' %}">申請表建立</a>
+        {% else %}
+        <a class="card-link" href="{% url 'login' %}">申請表建立(登入後啟用)</a>
+        {% endif %}
         <a class="card-link" href="{% url 'club_list' %}">社團名單</a>
         <a class="card-link" href="{% url 'apply_list' %}">申請列表</a>
     </div>
