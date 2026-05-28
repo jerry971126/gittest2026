@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import User, Club, Apply, Log
 from django.views.generic import ListView, RedirectView, CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
+from .forms import UserRegisterForm
 # Create your views here.
 
 # def club_list(req):
@@ -61,7 +62,7 @@ class Clublist(ListView):
         ctx['club_list'] = list(Club.objects.all())
         for club in ctx['club_list']:
             chief = club.user_set.filter(us_rank = 1)[:1]
-            club.chief = chief[0].us_name if chief else ""
+            club.chief = chief[0].username if chief else ""
         #申請轉設中的人數        
         return ctx
     
@@ -77,3 +78,9 @@ class ApplyUpdate(UpdateView):
             self.object.user.club = self.object.new_club
             self.object.user.save()            
         return form
+    
+
+class UserRegisterView(CreateView):
+    form_class = UserRegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('log_list')

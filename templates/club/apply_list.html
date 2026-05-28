@@ -32,7 +32,7 @@
                     {% for apply in apply_list %}
                     <th>
                         <a href="{% url 'apply_detail' apply.id %}">
-                        {{ apply.created|date:"Y-m-d" }} {{ apply.user.us_name }} : 
+                        {{ apply.created|date:"Y-m-d" }} {{ apply.user.username }} : 
                         由⌈{{ apply.user.club }}⌋ 轉道 ⌈{{ apply.club }}⌋
                         </a>
                     </th>
@@ -47,7 +47,7 @@
                 {% for apply in apply_list %}
                 <tr>
                     <td>{{ apply.created|date:"Y-m-d" }}</td>
-                    <td>{{ apply.user.us_name }}</td>
+                    <td>{{ apply.user.username }}</td>
                     <td>由⌈{{ apply.user.club }}⌋ 轉道 ⌈{{ apply.club }}⌋</td>
                     <td><a href='{% url 'apply_detail' apply.id %}'>詳細內容</a></td>
                 </tr>
