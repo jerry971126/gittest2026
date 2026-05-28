@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
@@ -9,7 +8,7 @@ class Club(models.Model):
     #club_id = models.IntegerField('社團id' , default=0)
     club_name = models.CharField('社團名稱' , max_length=64)
     max_people_num = models.IntegerField('社團人數上限' , default=0)
-    now_people_num = models.IntegerField('社團現有人數' , default=0, validators=[MinValueValidator(0),MaxValueValidator(512)])
+    now_people_num = models.IntegerField('社團現有人數' , default=0, validators=[MinValueValidator(0),MinValueValidator(512)])
 
     def __str__(self):
         return f"{self.club_name}"
@@ -20,9 +19,8 @@ class User(models.Model):
     us_name = models.CharField('使用者姓名' , max_length=64)
     us_email = models.CharField('使用者信箱', max_length=128)
     us_rank = models.IntegerField('使用者身分' , default=0) #0=轉社學生 ; 社長=1 ; 2=教師 ; 3=行政 (問題:如果是社長要轉社)
-    # club = models.ForeignKey(Club , models.CASCADE)
-    club = models.ForeignKey(Club, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='所屬社團')  #AI提供的版本，以便解決少數帳號能在沒有社團的狀況下建立
-    #one to one?
+    club = models.ForeignKey(Club , models.CASCADE)
+    #one to one
 
     def __str__(self):
         return f"{self.us_name}-{self.us_email}"
