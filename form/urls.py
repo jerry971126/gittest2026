@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('form/', include("club.urls")),
     path('', RedirectView.as_view(url=reverse_lazy('log_list'))), 
+    path('account/', include("django.contrib.auth.urls")),
 ]

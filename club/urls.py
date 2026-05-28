@@ -12,5 +12,4 @@ urlpatterns = [
     path("capply/", Applycreate.as_view(), name='apply_create'),
     path("club/", Clublist.as_view(), name='club_list'),
     path("<int:pk>/", Applyview.as_view(), name='apply_detail'),
-    path("register/", UserRegisterView.as_view(), name='register'),
 ]

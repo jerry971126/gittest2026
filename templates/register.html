@@ -1,0 +1,29 @@
+<form method="POST">
+
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="帳號">
+
+    <input type="password" name="password" placeholder="密碼">
+
+    <input type="email" name="email" placeholder="信箱">
+
+    <input type="text" name="us_name" placeholder="姓名">
+
+    <select name="club">
+
+        {% for club in club_list %}
+
+            <option value="{{ club.id }}">
+                {{ club.club_name }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+    <button type="submit">
+        註冊
+    </button>
+
+</form>
