@@ -30,6 +30,33 @@
         {% endif %}
         <a class="card-link" href="{% url 'club_list' %}">社團名單</a>
         <a class="card-link" href="{% url 'apply_list' %}">申請列表</a>
+        {% comment %} {% for us in user_li %}
+            {% if user.is_authenticated %}
+                {% if us.us_rank == 1 %}
+
+            {% endif %}
+        {% endfor %} {% endcomment %}
+        {% for target_user in user_list %}
+        <div style="padding: 10px; border-bottom: 1px solid #eee;">
+        <strong>{{ target_user.username }}</strong> 
+        (目前等級: {{ target_user.get_us_rank_display }})
+        
+        {% if request.user != target_user %}
+            
+            {% if request.user.us_rank == 1 %}
+                <a href="{% url 'rank_update' target_user.id %}" style="color: #28a745; margin-left: 15px; text-decoration: none; font-weight: bold;">
+                    🔼 調整權限/指派社團
+                </a>
+            
+            {% elif request.user.us_rank == 2 and target_user.us_rank > 2 %}
+                <a href="{% url 'user_promote' target_user.id %}" style="color: #28a745; margin-left: 15px; text-decoration: none; font-weight: bold;">
+                    🔼 調整權限/指派社團
+                </a>
+            {% endif %}
+
+        {% endif %}
+        </div>
+       {% endfor %}
     </div>
 </section>
 {% endblock %}

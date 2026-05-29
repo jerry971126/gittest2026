@@ -17,6 +17,10 @@
                 <span>社長:{{ cl.chief }}</span>
                 <span>最多可招收：{{ cl.max_people_num }}</span>
                 <span>現有人數：{{ cl.now_people_num }}</span>
+                {% if request.user.us_rank == 1 %}
+                <span><a href="{% url 'club_update' cl.id %}">編輯社團</a></span>
+                <span><a href="{% url 'club_delete' cl.id %}">刪除社團</a></span>
+                {% endif %}
             </div>
             <p class="club-status">{{ cl.now_people_num|default:0 }} / {{ cl.max_people_num|default:0 }}</p>
         </article>

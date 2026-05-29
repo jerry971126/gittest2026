@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}編輯社團{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改社團資訊 - {{ object.club_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #f4f6f9;
+        }
+        .form-container {
+            max-width: 500px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .info-box {
+            background-color: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #495057;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        /* 讓 Django 自動生成的表單輸入框變漂亮 */
+        .form-group input[type="text"], 
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+        .btn-cancel {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #6c757d;
+            text-decoration: none;
+        }
+        .btn-cancel:hover {
+            text-decoration: underline;
+        }
+        .error-msg {
+            color: #dc3545;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+    </style>
+    {% endblock %}
+
+{% block main %}
+<div class="form-container">
+    <h2>📝 修改社團基本資訊</h2>
+    
+    <div class="info-box">
+        <strong>目前社團現有人數：</strong> {{ object.now_people_num }} 人
+    </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="error-msg">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}"><strong>{{ field.label }}：</strong></label>
+                {{ field }}
+                
+                {% if field.errors %}
+                    <div class="error-msg">
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if field.help_text %}
+                    <small style="color: #6c757d;">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <br>
+        <button type="submit" class="btn-submit">💾 儲存變更</button>
+        
+        <a href="{% url 'club_list' %}" class="btn-cancel">取消並返回</a>
+    </form>
+</div>
+{% endblock %}

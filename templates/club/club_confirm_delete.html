@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}確認刪除社團{% endblock %}
+
+{% block main %}
+<h1>刪除社團</h1>
+<p>
+    確定要刪除社團{{club.club_name}}嗎?
+</p>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="確定刪除">
+</form>
+{% endblock %}

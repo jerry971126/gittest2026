@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
 from django.urls import reverse_lazy
-from .views import Loglist, Clubcreate, Applylist, Applycreate, Clublist, Applyview, UserRegisterView, success_msg, ApplyDelete,ApplyUpdate
+from .views import Loglist, Clubcreate, Applylist, Applycreate, Clublist, Applyview, UserRegisterView, success_msg, ApplyDelete,ApplyUpdate, ClubUpdate, ClubDelete, UserRankUpdateView
 
 urlpatterns = [
     path("", Loglist.as_view() ,name='log_list'),
@@ -16,4 +16,7 @@ urlpatterns = [
     path("register/", UserRegisterView.as_view(), name='register'),
     path("success/", success_msg, name= 'success'),
     path("<int:pk>/adelete/", ApplyDelete.as_view(), name='apply_delete'),
+    path("<int:pk>/cupdate/", ClubUpdate.as_view(), name='club_update'),
+    path("<int:pk>/cdelete", ClubDelete.as_view(), name='club_delete'),
+    path("user/<int:pk>/uupdate/", UserRankUpdateView.as_view(), name="rank_update"),
 ]

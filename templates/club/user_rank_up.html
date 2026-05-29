@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}調整使用者權限{% endblock %}
+
+{% block head %}
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f7f9fa; }
+        .box { max-width: 450px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin: 0 auto; }
+        h2 { color: #212529; border-bottom: 2px solid #28a745; padding-bottom: 10px; margin-top: 0; }
+        .user-info { background: #e8f5e9; padding: 12px; border-radius: 4px; margin-bottom: 20px; font-size: 0.95em; }
+        .form-group { margin-bottom: 15px; }
+        select, input { width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box; }
+        .btn-save { background: #28a745; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .btn-save:hover { background: #218838; }
+        .btn-back { display: block; text-align: center; margin-top: 15px; color: #6c757d; text-decoration: none; }
+    </style>
+{% endblock %}
+
+{% block main %}
+<div class="box">
+    <h2> 使用者權限指派系統</h2>
+    
+    <div class="user-info">
+        <strong>變更對象：</strong> {{ object.username }}<br>
+        <strong>目前帳號信箱：</strong> {{ object.email }}<br>
+        <strong>當前權限等級：</strong> {{ object.get_us_rank_display }}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}"><strong>{{ field.label }}：</strong></label>
+                {{ field }}
+                {% if field.errors %}
+                    <p style="color: red; font-size: 0.85em;">{{ field.errors.as_text }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn-save">確認升級 / 調整</button>
+        <a href="{% url 'log_list' %}" class="btn-back">取消返回</a>
+    </form>
+</div>
+{% endblock %}
