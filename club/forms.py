@@ -20,6 +20,6 @@ class UserRegisterForm(UserCreationForm):
             if 'us_rank' in self.fields:
                 self.fields['us_rank'].widget = forms.HiddenInput()
                 self.fields['us_rank'].initial = User.Rank.lv4 # 預設強制為 4級學生
-            if 'club' in self.fields:
-                self.fields['club'].widget = forms.HiddenInput()
-                self.fields['club'].required = False
+            # if 'club' in self.fields:
+            #     self.fields['club'].widget = forms.HiddenInput()
+            #     self.fields['club'].required = False

@@ -89,14 +89,29 @@ class Apply(models.Model):
     user = models.ForeignKey(User , models.CASCADE)
     club = models.ForeignKey(Club ,models.CASCADE)
     club_after = models.ForeignKey(Club , on_delete=models.CASCADE, related_name='after_apply', null=True, blank=True)
-
+    
+    #原社長確認權限
     def can_user_check_sstu1(self, reviewing_user):
         if reviewing_user.us_rank == User.Rank.lv1:  #這裡先設定只有1級和該社社長可以確認，不包括校方人員
             return True
         
         if reviewing_user.us_rank == User.Rank.lv3 and reviewing_user.club == self.club:
             return True 
-          
+
+    #新社長確認權限
+    def can_user_check_sstu2(self, reviewing_user):
+        if reviewing_user.us_rank == User.Rank.lv1:
+            return True
+        # 比對登入者的社團，是否等於這張單子申請轉入的「新社團 (club_after)」
+        if reviewing_user.us_rank == User.Rank.lv3 and reviewing_user.club == self.club_after:
+            return True
+        return False
+    
+    #校方人員確認權限
+    def can_user_check_school(self, reviewing_user):
+        if reviewing_user.us_rank in [User.Rank.lv1, User.Rank.lv2]:
+            return True
+        return False
 #    def __str__(self):
 #       return self.
 

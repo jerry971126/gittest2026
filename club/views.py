@@ -339,3 +339,5 @@ class UserRankUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  
         if self.request.user.is_authenticated:
             raise PermissionDenied("權限不足：只有 1 級管理員或 2 級校方人員可以調整使用者權限。")
         return super().handle_no_permission()
+    
+    success_url = reverse_lazy('success')

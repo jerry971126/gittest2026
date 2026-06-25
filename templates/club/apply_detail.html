@@ -24,8 +24,7 @@
     
     {% if apply.sstu1_pass is None and request.user.is_authenticated %}
         {% if request.user.us_rank == 1 or request.user.us_rank == 3 and request.user.club == apply.club %}
-        
-            <p style="background-color: #f0f8ff; padding: 10px;">
+            <p style="background-color: #f0f8ff; padding: 10px; border-left: 5px solid #007bff;">
                 👋 您好 {{ request.user.username }}，您擁有此單的「原社長審核權限」：
                 <br><br>
                 <a href="{% url 'apply_update' apply.id %}" style="background-color: green; color: white; padding: 5px 10px; text-decoration: none;">點我進行審核</a>
@@ -33,6 +32,25 @@
         {% endif %}
     {% endif %}
 
+    {% if apply.sstu1_pass == True and apply.sstu2_pass is None and request.user.is_authenticated %}
+        {% if request.user.us_rank == 1 or request.user.us_rank == 3 and request.user.club == apply.club_after %}
+            <p style="background-color: #fff9e6; padding: 10px; border-left: 5px solid #ffc107;">
+                👋 您好 {{ request.user.username }}，您擁有此單的「新社長審核權限」：
+                <br><br>
+                <a href="{% url 'apply_update' apply.id %}" style="background-color: #ffc107; color: black; padding: 5px 10px; text-decoration: none; font-weight: bold;">點我進行審核</a>
+            </p>
+        {% endif %}
+    {% endif %}
+
+    {% if apply.sstu1_pass == True and apply.sstu2_pass == True and apply.sch_pass is None and request.user.is_authenticated %}
+        {% if request.user.us_rank == 1 or request.user.us_rank == 2 %}
+            <p style="background-color: #e6f9ff; padding: 10px; border-left: 5px solid #17a2b8;">
+                🏫 您好 {{ request.user.username }}，此單已通過兩任社長同意，您擁有「最終行政核定權限」：
+                <br><br>
+                <a href="{% url 'apply_update' apply.id %}" style="background-color: #17a2b8; color: white; padding: 5px 10px; text-decoration: none;">點我進行核定</a>
+            </p>
+        {% endif %}
+    {% endif %}
     <hr>
 
     <h3>⏳ 目前審核進度狀態</h3>
